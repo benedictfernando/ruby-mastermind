@@ -4,8 +4,8 @@ class Mastermind
 
         # welcome player
         puts "Welcome to Mastermind Game!\n" + 
-        "To be the code breaker, enter 1.\n" +
-        "To be the code maker, enter 2."; print "> "
+            "To be the code breaker, enter 1.\n" +
+            "To be the code maker, enter 2."; print "> "
 
         # prompt player for valid input
         while choice = gets.chomp.to_i
@@ -23,15 +23,36 @@ class Mastermind
     private
 
     def break_code
-        puts "You are the code breaker."
+        puts "You are the code breaker.\n"
 
         # generate random computer code
         code_to_break = generate_random_code
 
-        for tries in 1..12
-            puts tries
+        # give player chance to guess the code within no. of tries
+        attempt, max_tries = 0, 12
 
-            # if code was guessed, exit loop
+        puts "Guess the #{code_to_break} within #{max_tries} moves."
+        print "Guess ##{attempt + 1} > "
+
+        while guess = gets.chomp
+
+            puts    # print new line for breaks
+
+            if guess == code_to_break
+                puts "Congratulations~ you win!"; break
+            else
+                attempt += 1
+                
+                # break immmediately when player spend all his/her moves
+                if attempt == max_tries
+                    puts "Out of moves~ you lose."; break
+                end 
+                
+                # otherwise, furhter prompt him/her for his/her guess 
+                puts "Your guess is wrong~ try again. " + 
+                    "(#{max_tries - attempt} move/s left.)"
+                print "Guess ##{attempt + 1} > "
+            end 
         end
     end
 
