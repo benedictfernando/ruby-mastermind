@@ -23,6 +23,7 @@ class Mastermind
     private
 
     def break_code
+
         puts "You are the code breaker.\n"
 
         # generate random computer code
@@ -31,10 +32,16 @@ class Mastermind
         # give player chance to guess the code within no. of tries
         attempt, max_tries = 0, 12
 
-        puts "Guess the #{code_to_break} within #{max_tries} moves.\n" + 
-            "Note: You'll be provided with feedback for every incorrect guess you make.\n" + 
-            "• '⚫' signifies that you've matched a peg with its exact location against the code.\n" + 
-            "• '⚪' signifies that you've matched a peg, but on an incorrect location against the code.\n"
+        puts "Guess the code within #{max_tries} moves.\n" + 
+
+            "Note: You'll be provided with feedback " +
+            "for every incorrect guess you make.\n" + 
+
+            "• '⚫' signifies that you've matched a peg " +
+            "with its exact location against the code.\n" + 
+            
+            "• '⚪' signifies that you've matched a peg, " +
+            "but on an incorrect location against the code.\n"
 
         puts "\nYou may now input your first guess below. Good luck!"
         print "Guess ##{attempt + 1} > "
@@ -43,30 +50,41 @@ class Mastermind
 
             puts    # print new line for breaks
 
-            if guess == code_to_break
+            # for invalid inputs
+            if guess.length != 4 || guess.to_i < 1 || guess.to_i > 6666
+                print "Error: You've entered an invalid input. Please input " +
+                    "4-digit integer values only; wherein each digit is " +
+                    "between 1 and 6 (inclusive).\nGuess ##{attempt + 1} > "
+
+            # for correct guesses
+            elsif guess == code_to_break
                 if attempt == 0 then puts 'Woah, first try!'
                 elsif attempt == 11 then puts "Nice, that's clutch!" end
-                puts "Congratulations~ you win!"; break
+                puts "Congratulations~ you won in #{attempt + 1} move/s!"; break
+
+            # for incorrect guesses
             else
                 attempt += 1
                 
                 # break immmediately when player spend all his/her moves
                 if attempt == max_tries
-                    puts "Out of moves~ you lose."; break
+                    puts "Out of moves~ you lose! Code is: #{code_to_break}."
+                    break
                 end 
                 
-                # otherwise, furhter prompt him/her for his/her guess 
+                # otherwise, further prompt him/her for his/her guess 
                 puts "Your guess is wrong~ try again. " + 
                     "(#{max_tries - attempt} move/s left.)"
 
                 # provide feedback along the way
-                provide_feedback(guess, code_to_break)
+                provide_feedback(guess, code_to_break.clone)
                 print "Guess ##{attempt + 1} > "
             end 
         end
     end
 
     def generate_random_code
+
         code = ''
 
         # note: you can change the no. of iterations depending on your code's
@@ -79,18 +97,25 @@ class Mastermind
     end
 
     def provide_feedback(guess, code_to_break)
-        # check for every character of 'guess' (for loop || use length of 'code_to_break')
-            # if character is exact as w/ exact location vs 'code_to_break'
-                # print '⚫ '
-                # next (skip loop to next iteration)
-            # elsif character has at least one character vs 'code_to_break'
-                # print '⚪ '
-                # next (skip loop to next iteration)
-            # end
-        # end
+
+        print "The clue is: "; clue = ''
+
+        for index in 0...guess.length do
+            number = guess[index]
+            if number == code_to_break[index] 
+                code_to_break[index] = 'x'
+                clue << '⚫'
+            elsif code_to_break.include?(number)
+                code_to_break[code_to_break.index(number)] = 'x'
+                clue << '⚪' 
+            end
+        end
+
+        if clue == '' then puts "there's no match." else puts clue end
     end
 
     def make_code
+
         puts "You are the code maker."
 
         # generate ai that'll solve the code
