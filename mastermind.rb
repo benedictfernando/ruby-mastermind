@@ -51,7 +51,7 @@ class Mastermind
             puts    # print new line for breaks
 
             # for invalid inputs
-            if guess.length != 4 || guess.to_i < 1 || guess.to_i > 6666
+            if guess.length != 4 || guess.to_i < 1111 || guess.to_i > 6666
                 print "Error: You've entered an invalid input. Please input " +
                     "4-digit integer values only; wherein each digit is " +
                     "between 1 and 6 (inclusive).\nGuess ##{attempt + 1} > "
