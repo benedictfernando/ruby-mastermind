@@ -24,7 +24,7 @@ class Mastermind
 
     def break_code
 
-        puts "You are the code breaker.\n"
+        puts "You are the code breaker."
 
         # generate random computer code
         code_to_break = generate_random_code
@@ -53,7 +53,7 @@ class Mastermind
             # for invalid inputs
             if guess.length != 4 || guess.to_i < 1111 || guess.to_i > 6666
                 print "Error: You've entered an invalid input. Please input " +
-                    "4-digit integer values only; wherein each digit is " +
+                    "4-digit integer values only; where each digit is " +
                     "between 1 and 6 (inclusive).\nGuess ##{attempt + 1} > "
 
             # for correct guesses
@@ -118,9 +118,30 @@ class Mastermind
 
         puts "You are the code maker."
 
+        # prompt player for a valid code
+        print "Rule: Please input a 4-digit integer value only; where each " +
+            "digit is between 1 and 6 (inclusive).\nType in your code now > "
+        code_to_break = gets.chomp
+
+        # re-prompt player until he/she provides a valid code
+        until 
+            code_to_break.length == 4 && 
+            code_to_break.to_i >= 1111 &&
+            code_to_break.to_i <= 6666
+
+            puts; print "Error: You've entered an invalid input.\n" +
+                "Please type in a valid code (as per the rule above) here > "
+            code_to_break = gets.chomp
+        end
+
+        # test for validity in the meantime
+        puts; print "Code created successfully!\n" + 
+            "Computer will now guess your code...\n"
+        puts code_to_break
+
         # generate ai that'll solve the code
     end
 end
 
 # start new game
-new_game = Mastermind.new
+Mastermind.new
